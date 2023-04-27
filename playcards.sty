@@ -1,0 +1,161 @@
+% Clément PAGÈS <contact@clementpages.fr>
+%
+% Draw basic playcards with Tikz. Inspired by https://tex.stackexchange.com/questions/47924/creating-playing-cards-using-tikz
+%
+% Provides cards for a4paper format
+%
+% Licence Gnu General Public Licence https://www.gnu.org/licenses/gpl-3.0.html
+% Basic usage :
+%%    \drawcardsrecto{<text><background color><fontsize><circle ray>
+%%          fill an a4paper with cards
+%%    \drawcardrecto{<text><background color><fontsize><circle ray>
+%%          draw one card
+%%    \drawcardsverso{<text>}{<fontsize}
+%%          fill an a4paper with cards
+%%    \drawcardverso{<text>}{<fontsize}
+%%          draw one card
+
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{playcards}[2023/04/27, Personal commands]
+
+\RequirePackage{anttor}
+
+\RequirePackage{graphicx}
+
+\RequirePackage{tikz}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shadows}
+\usepgflibrary {shadings} 
+
+\RequirePackage[outline]{contour}
+
+\pgfmathsetmacro{\cardwidth}{59}
+\pgfmathsetmacro{\cardheight}{89}
+\pgfmathsetmacro{\cardmargin}{4}
+\pgfmathsetmacro{\cardwidthbody}{\cardwidth-\cardmargin}
+\pgfmathsetmacro{\cardheightbody}{\cardheight-\cardmargin}
+\pgfmathsetmacro{\stripwidth}{10}
+\pgfmathsetmacro{\strippadding}{2}
+
+
+\def\shapeCard{(0,0) rectangle (\cardwidth,\cardheight)}
+\def\shapeCardBody{(0,0) rectangle (\cardwidthbody,\cardheightbody)}
+\def\shapeMargin{(\cardmargin,\cardmargin) rectangle (\cardwidthbody,\cardheightbody)}
+
+\tikzset{
+    x=1mm,y=1mm,
+    cardcorners/.style={
+        rounded corners=4
+    },
+}
+
+\newcommand{\carddebug}{
+    \draw [step=1,help lines] (0,0) grid (\cardwidth,\cardheight);
+}
+
+\newcommand{\cardborder}{
+    \draw[lightgray,cardcorners] \shapeCard;
+    \draw[black,cardcorners,line width=1pt] \shapeMargin;
+}
+
+\newcommand{\cardpadding}{
+    \draw[white,cardcorners] {(0,0) rectangle (\cardwidth+2,\cardheight+2)};
+}
+
+% Parameters : #1: fontsize (pt)
+%              #2: text contents
+\newcommand{\cardbackground}[2]{
+    \pgfmathsetmacro{\textsize}{#2}
+    \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
+    \begin{scope} % Draw background
+		\clip[cardcorners] \shapeCard;
+		\draw[shading=color wheel,opacity=0.6] (0,0) rectangle (\cardwidth,\cardheight);
+    \end{scope}
+    \begin{scope}[shift={(0.5*\cardwidth,0.5*\cardheight)}] % White text
+        \node[rotate=45, color=white] at (0,0) {\contourlength{1pt}\contour{black!}{\fontsize{\textsize pt}{\textlineskip pt}\selectfont #1}};
+    \end{scope}
+}
+
+% Parameters : #1: text contents
+%              #2: background color
+%              #3: fontsize (pt)    
+%              #4: circle ray (mm)
+\newcommand{\cardcontent}[4]{
+    \pgfmathsetmacro{\textsize}{#3}
+    \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
+	\begin{scope}
+		\clip[cardcorners] \shapeMargin;
+		\shade[xshift=29.5mm, yshift=44.5mm, inner color=#2, outer color=white] circle (\cardwidth) circle(#4);
+		\draw[color=white] (0,0) -- (60,70);
+		\draw[color=white] (0,20) -- (60,15);
+		\draw[color=white] (0,24) -- (60,30);
+		\draw[color=white] (0,37) -- (60,36);
+		\draw[color=white] (0,40) -- (60,60);
+		\draw[color=white] (0,47) -- (60,5);
+		\draw[color=white] (0,55) -- (60,45);
+		\draw[color=white] (0,70) -- (40,0);
+		\draw[color=white] (0,76) -- (60,65);
+		\draw[color=white] (0,80) -- (25,0);
+		\draw[color=white] (20,80) -- (15,0);
+		\draw[color=white] (35,90) -- (0,80);
+		\draw[color=white] (40,90) -- (60,-20);
+		\draw[color=white] (0,5) -- (60,90);
+		\draw[xshift=29.5mm, yshift=44.5mm, fill=white, color=white] circle(#4);
+	\end{scope}
+		\node[align=center, text width=5 cm] at (0.5*\cardwidth,0.5*\cardheight) {{\fontsize{\textsize pt}{\textlineskip pt}\selectfont #1}};
+}
+
+\newcommand{\cardcorner}[1]{
+	\begin{scope}[shift={(13,76)}]
+		\draw[rotate=30, fill=white, color=white] (0,0) ellipse (8 and 5) node[color=black, rotate=30]{{\fontsize{36pt}{43pt}\selectfont #1}};
+	\end{scope}
+	\begin{scope}[shift={(\cardwidth-13,\cardheight-76)}]
+		\draw[rotate=30, fill=white, color=white] (0,0) ellipse (8 and 5) node[rotate=210, color=black]{{\fontsize{36pt}{43pt}\selectfont #1}};
+	\end{scope}
+}
+
+% Parameters : #1: text contents
+%              #2: background color
+%              #3: fontsize (pt)
+%              #4: circle ray at card center (mm)
+\newcommand{\drawcardrecto}[4]{
+	\begin{tikzpicture}
+		\cardborder
+		\cardpadding
+		\cardcontent{#1}{#2}{#3}{#4}
+		\cardcorner{#1}
+	\end{tikzpicture}%
+}
+
+% Parameters : #1: text contents
+%              #2: fontsize (pt)
+\newcommand{\drawcardverso}[2]{
+    \begin{tikzpicture}%
+		\cardpadding
+		\cardbackground{#1}{#2}
+	\end{tikzpicture}
+}
+
+% Parameters : #1: text contents
+%              #2: fontsize (pt)
+\newcommand{\drawcardsverso}[2]{
+    \foreach \k in {0,...,2}{
+        \foreach \n in {0,...,2}{
+            \noindent\drawcardverso{#1}{#2}%
+        }\\%
+    }
+}
+
+% Parameters : #1: text contents
+%              #2: background color
+%              #3: fontsize (pt)
+%              #4: circle ray at card center (mm)
+\newcommand{\drawcardsrecto}[4] {
+    \foreach \k in {0,...,2}{
+        \foreach \n in {0,...,2}{
+            \noindent\drawcardrecto{#1}{#2}{#3}{#4}%
+        }\\%
+    }
+}
