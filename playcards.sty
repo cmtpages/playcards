@@ -65,7 +65,7 @@
 }
 
 
-\setKVdefault[RectoKeys]{borders=true, trame=true, corners=true, backgroundImg=true, textColor=black}
+\setKVdefault[RectoKeys]{borders=true, trame=true, corners=true, backgroundImg=true, textColor=black, backgroundColor=red, contentsFontSize=120, cornerFontSize=20}
 \setKVdefault[VersoKeys]{backgroundImg=true, trame=true}
 
 
@@ -73,16 +73,16 @@
 %			   #2: fontsize (pt)
 %              #3: text contents
 \newcommand{\cardbackgroundverso}[3][]{
-    \pgfmathsetmacro{\textsize}{#3}
+    \pgfmathsetmacro{\textsize}{#2}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
 	\clip[cardcorners] \shapeCard;
-    \ifboolKV[VersoKeys]{backgroundImg} {
+    \ifboolKV[VersoKeys]{backgroundImg} {%
 		\begin{scope} % Draw background
 			\draw[shading=color wheel,opacity=0.6] (0,0) rectangle (\cardwidth,\cardheight);
 		\end{scope}
-	}{
-		\draw[cardcorners, line width=1pt] \shapeCard;
-	}
+	}{%
+		\draw[cardcorners, line width=1pt] \shapeCard;%
+	}%
     \begin{scope}[shift={(0.5*\cardwidth,0.5*\cardheight)}] % White text
         \node[rotate=45, color=white] at (0,0) {\contourlength{1pt}\contour{black!}{\fontsize{\textsize pt}{\textlineskip pt}\selectfont #2}};
     \end{scope}
@@ -93,8 +93,8 @@
 %              #3: background color
 %              #4: fontsize (pt)
 %              #5: circle ray (mm)
-\newcommand{\cardcontent}[5][]{
-    \pgfmathsetmacro{\textsize}{#4}
+\newcommand{\cardcontent}[3][]{
+    \pgfmathsetmacro{\textsize}{120}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
     \begin{scope}
 		\ifboolKV[RectoKeys]{borders} {
@@ -103,7 +103,7 @@
 			\clip[cardcorners] \shapeCard;
 		}
 		\ifboolKV[RectoKeys]{backgroundImg} {
-			\shade[xshift=29.5mm, yshift=44.5mm, inner color=#3, outer color=white] circle (\cardwidth) circle(#4);
+			\shade[xshift=29.5mm, yshift=44.5mm, inner color={\useKV[RectoKeys]{backgroundColor}}, outer color=white] circle (\cardwidth) circle(#3);
 		}
 		{}
 		\draw[color=white] (0,0) -- (60,70);
@@ -120,9 +120,9 @@
 		\draw[color=white] (35,90) -- (0,80);
 		\draw[color=white] (40,90) -- (60,-20);
 		\draw[color=white] (0,5) -- (60,90);
-		\draw[xshift=29.5mm, yshift=44.5mm, fill=white, color=white] circle(#5);
+		\draw[xshift=29.5mm, yshift=44.5mm, fill=white, color=white] circle(#3);
 	\end{scope}
-	\node[align=center, text width=5 cm] at (0.5*\cardwidth,0.5*\cardheight) {{\color{\useKV[RectoKeys]{textColor}}\fontsize{\textsize pt}{\textlineskip pt}\selectfont #2}};
+	\node[align=center, text width=5 cm] at (0.5*\cardwidth,0.5*\cardheight) {{\color{\useKV[RectoKeys]{textColor}}\fontsize{\textsize}{\textlineskip}\selectfont #2}};
 }
 
 \newcommand{\cardcorner}[1]{
@@ -136,14 +136,12 @@
 
 % Parameters : #1: parametres facultatifs KV
 %			   #2: text contents
-%              #3: background color
-%              #4: fontsize (pt)
-%              #5: circle ray at card center (mm)
-\newcommand{\drawcardrecto}[5][]{
+%              #3: circle ray at card center (mm)
+\newcommand{\drawcardrecto}[3][]{
 	\begin{tikzpicture}
 		\cardborder
 		\cardpadding
-		\cardcontent{#2}{#3}{#4}{#5}
+		\cardcontent{#2}{#3}
 		\ifboolKV[RectoKeys]{corners}{
 			\cardcorner{#2}
 		}{
@@ -165,10 +163,11 @@
 %			   #2: text contents
 %              #3: fontsize (pt)
 \newcommand{\drawcardsverso}[3][]{
-    \setKV[VersoKeys]{#1}
-    \ifboolKV[VersoKeys]{trame}{
-		\foreach \k in {0,...,2}{
-			\foreach \n in {0,...,2}{
+    \useKVdefault[VersoKeys]%
+    \setKV[VersoKeys]{#1}%
+    \ifboolKV[VersoKeys]{trame}{%
+		\foreach \k in {0,...,2}{%
+			\foreach \n in {0,...,2}{%
 				\noindent\drawcardverso{#2}{#3}%
 			}\\%
 		}%
@@ -179,18 +178,17 @@
 
 % Parameters : #1: parametres facultatives KV
 %			   #2: text contents
-%              #3: background color
-%              #4: fontsize (pt)
-%              #5: circle ray at card center (mm)
-\newcommand{\drawcardsrecto}[5][] {
-	\setKV[RectoKeys]{#1}
+%              #3: circle ray at card center (mm)
+\newcommand{\drawcardsrecto}[3][] {
+	\useKVdefault[RectoKeys]%
+	\setKV[RectoKeys]{#1}%
 	\ifboolKV[RectoKeys]{trame}{
-		\foreach \k in {0,...,2}{
-			\foreach \n in {0,...,2}{
-				\noindent\drawcardrecto{#2}{#3}{#4}{#5}%
+		\foreach \k in {0,...,2}{%
+			\foreach \n in {0,...,2}{%
+				\noindent\drawcardrecto{#2}{#3}%
 			}\\%
 		}%
 	}{
-		\noindent\drawcardrecto{#2}{#3}{#4}{#5}%
+		\noindent\drawcardrecto{#2}{#3}%
 	}%
 }
