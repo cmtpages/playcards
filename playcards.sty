@@ -64,17 +64,28 @@
     \draw[white,cardcorners] {(0,0) rectangle (\cardwidth+2,\cardheight+2)};
 }
 
-% Parameters : #1: fontsize (pt)
-%              #2: text contents
-\newcommand{\cardbackground}[2]{
-    \pgfmathsetmacro{\textsize}{#2}
+
+\setKVdefault[RectoKeys]{borders=true, trame=true}
+
+\setKVdefault[VersoKeys]{backgroundImg=true, trame=true}
+
+
+% Parameters : #1: parametres facultatifs KV
+%			   #2: fontsize (pt)
+%              #3: text contents
+\newcommand{\cardbackgroundverso}[3][]{
+    \pgfmathsetmacro{\textsize}{#3}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
-    \begin{scope} % Draw background
-		\clip[cardcorners] \shapeCard;
-		\draw[shading=color wheel,opacity=0.6] (0,0) rectangle (\cardwidth,\cardheight);
-    \end{scope}
+	\clip[cardcorners] \shapeCard;
+    \ifboolKV[VersoKeys]{backgroundImg} {
+		\begin{scope} % Draw background
+			\draw[shading=color wheel,opacity=0.6] (0,0) rectangle (\cardwidth,\cardheight);
+		\end{scope}
+	}{
+		\draw[cardcorners, line width=1pt] \shapeCard;
+	}
     \begin{scope}[shift={(0.5*\cardwidth,0.5*\cardheight)}] % White text
-        \node[rotate=45, color=white] at (0,0) {\contourlength{1pt}\contour{black!}{\fontsize{\textsize pt}{\textlineskip pt}\selectfont #1}};
+        \node[rotate=45, color=white] at (0,0) {\contourlength{1pt}\contour{black!}{\fontsize{\textsize pt}{\textlineskip pt}\selectfont #2}};
     \end{scope}
 }
 
@@ -82,12 +93,16 @@
 %              #2: background color
 %              #3: fontsize (pt)    
 %              #4: circle ray (mm)
-\newcommand{\cardcontent}[4]{
-    \pgfmathsetmacro{\textsize}{#3}
+\newcommand{\cardcontent}[5][]{
+    \pgfmathsetmacro{\textsize}{#4}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
-	\begin{scope}
-		\clip[cardcorners] \shapeMargin;
-		\shade[xshift=29.5mm, yshift=44.5mm, inner color=#2, outer color=white] circle (\cardwidth) circle(#4);
+    \begin{scope}
+		\ifboolKV[RectoKeys]{borders} {
+			\clip[cardcorners] \shapeMargin;
+		}{
+			\clip[cardcorners] \shapeCard;
+		}
+		\shade[xshift=29.5mm, yshift=44.5mm, inner color=#3, outer color=white] circle (\cardwidth) circle(#4);
 		\draw[color=white] (0,0) -- (60,70);
 		\draw[color=white] (0,20) -- (60,15);
 		\draw[color=white] (0,24) -- (60,30);
@@ -102,9 +117,9 @@
 		\draw[color=white] (35,90) -- (0,80);
 		\draw[color=white] (40,90) -- (60,-20);
 		\draw[color=white] (0,5) -- (60,90);
-		\draw[xshift=29.5mm, yshift=44.5mm, fill=white, color=white] circle(#4);
+		\draw[xshift=29.5mm, yshift=44.5mm, fill=white, color=white] circle(#5);
 	\end{scope}
-		\node[align=center, text width=5 cm] at (0.5*\cardwidth,0.5*\cardheight) {{\fontsize{\textsize pt}{\textlineskip pt}\selectfont #1}};
+	\node[align=center, text width=5 cm] at (0.5*\cardwidth,0.5*\cardheight) {{\fontsize{\textsize pt}{\textlineskip pt}\selectfont #2}};
 }
 
 \newcommand{\cardcorner}[1]{
@@ -116,46 +131,60 @@
 	\end{scope}
 }
 
-% Parameters : #1: text contents
-%              #2: background color
-%              #3: fontsize (pt)
-%              #4: circle ray at card center (mm)
-\newcommand{\drawcardrecto}[4]{
+% Parameters : #1: parametres facultatifs KV
+%			   #2: text contents
+%              #3: background color
+%              #4: fontsize (pt)
+%              #5: circle ray at card center (mm)
+\newcommand{\drawcardrecto}[5][]{
 	\begin{tikzpicture}
 		\cardborder
 		\cardpadding
-		\cardcontent{#1}{#2}{#3}{#4}
-		\cardcorner{#1}
+		\cardcontent{#2}{#3}{#4}{#5}
+		\cardcorner{#2}
 	\end{tikzpicture}%
 }
 
-% Parameters : #1: text contents
-%              #2: fontsize (pt)
-\newcommand{\drawcardverso}[2]{
-    \begin{tikzpicture}%
+% Parameters : #1: parametres facultatifs KV
+%			   #2: text contents
+%              #3: fontsize (pt)
+\newcommand{\drawcardverso}[3][]{
+	\begin{tikzpicture}%
 		\cardpadding
-		\cardbackground{#1}{#2}
+		\cardbackgroundverso{#2}{#3}
 	\end{tikzpicture}
 }
 
-% Parameters : #1: text contents
-%              #2: fontsize (pt)
-\newcommand{\drawcardsverso}[2]{
-    \foreach \k in {0,...,2}{
-        \foreach \n in {0,...,2}{
-            \noindent\drawcardverso{#1}{#2}%
-        }\\%
-    }
+% Parameters : #1: parametres facultatifs KV
+%			   #2: text contents
+%              #3: fontsize (pt)
+\newcommand{\drawcardsverso}[3][]{
+    \setKV[VersoKeys]{#1}
+    \ifboolKV[VersoKeys]{trame}{
+		\foreach \k in {0,...,2}{
+			\foreach \n in {0,...,2}{
+				\noindent\drawcardverso{#2}{#3}%
+			}\\%
+		}
+	}{
+		\noindent\drawcardverso{#2}{#3}%
+	}
 }
 
-% Parameters : #1: text contents
-%              #2: background color
-%              #3: fontsize (pt)
-%              #4: circle ray at card center (mm)
-\newcommand{\drawcardsrecto}[4] {
-    \foreach \k in {0,...,2}{
-        \foreach \n in {0,...,2}{
-            \noindent\drawcardrecto{#1}{#2}{#3}{#4}%
-        }\\%
-    }
+% Parameters : #1: parametres facultatives KV
+%			   #2: text contents
+%              #3: background color
+%              #4: fontsize (pt)
+%              #5: circle ray at card center (mm)
+\newcommand{\drawcardsrecto}[5][] {
+	\setKV[RectoKeys]{#1}
+	\ifboolKV[RectoKeys]{trame}{
+		\foreach \k in {0,...,2}{
+			\foreach \n in {0,...,2}{
+				\noindent\drawcardrecto{#2}{#3}{#4}{#5}%
+			}\\%
+		}
+	}{
+		\noindent\drawcardrecto{#2}{#3}{#4}{#5}%
+	}
 }
