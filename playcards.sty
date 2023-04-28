@@ -65,7 +65,7 @@
 }
 
 
-\setKVdefault[RectoKeys]{borders=true, trame=true, corners=true, backgroundImg=true}
+\setKVdefault[RectoKeys]{borders=true, trame=true, corners=true, backgroundImg=true, textColor=black}
 \setKVdefault[VersoKeys]{backgroundImg=true, trame=true}
 
 
@@ -122,15 +122,15 @@
 		\draw[color=white] (0,5) -- (60,90);
 		\draw[xshift=29.5mm, yshift=44.5mm, fill=white, color=white] circle(#5);
 	\end{scope}
-	\node[align=center, text width=5 cm] at (0.5*\cardwidth,0.5*\cardheight) {{\fontsize{\textsize pt}{\textlineskip pt}\selectfont #2}};
+	\node[align=center, text width=5 cm] at (0.5*\cardwidth,0.5*\cardheight) {{\color{\useKV[RectoKeys]{textColor}}\fontsize{\textsize pt}{\textlineskip pt}\selectfont #2}};
 }
 
 \newcommand{\cardcorner}[1]{
 	\begin{scope}[shift={(13,76)}]
-		\draw[rotate=30, fill=white, color=white] (0,0) ellipse (8 and 5) node[color=black, rotate=30]{{\fontsize{36pt}{43pt}\selectfont #1}};
+		\draw[rotate=30, fill=white, color=white] (0,0) ellipse (8 and 5) node[color=black, rotate=30]{{\color{\useKV[RectoKeys]{textColor}}{\fontsize{36pt}{43pt}\selectfont #1}}};
 	\end{scope}
 	\begin{scope}[shift={(\cardwidth-13,\cardheight-76)}]
-		\draw[rotate=30, fill=white, color=white] (0,0) ellipse (8 and 5) node[rotate=210, color=black]{{\fontsize{36pt}{43pt}\selectfont #1}};
+		\draw[rotate=30, fill=white, color=white] (0,0) ellipse (8 and 5) node[rotate=210, color=black]{{\color{\useKV[RectoKeys]{textColor}}{\fontsize{36pt}{43pt}\selectfont #1}}};
 	\end{scope}
 }
 
@@ -171,10 +171,10 @@
 			\foreach \n in {0,...,2}{
 				\noindent\drawcardverso{#2}{#3}%
 			}\\%
-		}
-	}{
+		}%
+	}{%
 		\noindent\drawcardverso{#2}{#3}%
-	}
+	}%
 }
 
 % Parameters : #1: parametres facultatives KV
@@ -189,8 +189,8 @@
 			\foreach \n in {0,...,2}{
 				\noindent\drawcardrecto{#2}{#3}{#4}{#5}%
 			}\\%
-		}
+		}%
 	}{
 		\noindent\drawcardrecto{#2}{#3}{#4}{#5}%
-	}
+	}%
 }
