@@ -69,11 +69,9 @@
 \setKVdefault[VersoKeys]{backgroundImg=true, trame=true}
 
 
-% Parameters : #1: parametres facultatifs KV
-%			   #2: fontsize (pt)
-%              #3: text contents
+
 \newcommand{\cardbackgroundverso}[3][]{
-    \pgfmathsetmacro{\textsize}{#2}
+    \pgfmathsetmacro{\textsize}{#3}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
 	\clip[cardcorners] \shapeCard;
     \ifboolKV[VersoKeys]{backgroundImg} {%
@@ -84,15 +82,11 @@
 		\draw[cardcorners, line width=1pt] \shapeCard;%
 	}%
     \begin{scope}[shift={(0.5*\cardwidth,0.5*\cardheight)}] % White text
-        \node[rotate=45, color=white] at (0,0) {\contourlength{1pt}\contour{black!}{\fontsize{\textsize pt}{\textlineskip pt}\selectfont #2}};
+        \node[rotate=45, color=white] at (0,0) {\contourlength{1pt}\contour{black!}{\fontsize{\textsize}{\textlineskip pt}\selectfont #2}};
     \end{scope}
 }
 
-% Parameters : #1: parametres facultatifs KV
-%			   #2: text contents
-%              #3: background color
-%              #4: fontsize (pt)
-%              #5: circle ray (mm)
+
 \newcommand{\cardcontent}[2][]{
     \pgfmathsetmacro{\textsize}{\useKV[RectoKeys]{contentsFontSize}}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
@@ -136,9 +130,7 @@
 	\end{scope}
 }
 
-% Parameters : #1: parametres facultatifs KV
-%			   #2: text contents
-%              #3: circle ray at card center (mm)
+
 \newcommand{\drawcardrecto}[2][]{
 	\begin{tikzpicture}
 		\cardborder
@@ -151,9 +143,7 @@
 	\end{tikzpicture}%
 }
 
-% Parameters : #1: parametres facultatifs KV
-%			   #2: text contents
-%              #3: fontsize (pt)
+
 \newcommand{\drawcardverso}[3][]{
 	\begin{tikzpicture}%
 		\cardpadding
@@ -161,9 +151,7 @@
 	\end{tikzpicture}
 }
 
-% Parameters : #1: parametres facultatifs KV
-%			   #2: text contents
-%              #3: fontsize (pt)
+
 \newcommand{\drawcardsverso}[3][]{
     \useKVdefault[VersoKeys]%
     \setKV[VersoKeys]{#1}%
@@ -178,9 +166,6 @@
 	}%
 }
 
-% Parameters : #1: parametres facultatives KV
-%			   #2: text contents
-%              #3: circle ray at card center (mm)
 \newcommand{\drawcardsrecto}[2][] {
 	\useKVdefault[RectoKeys]%
 	\setKV[RectoKeys]{#1}%
