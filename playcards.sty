@@ -65,7 +65,7 @@
 }
 
 
-\setKVdefault[RectoKeys]{borders=true, trame=true, corners=true, backgroundImg=true, textColor=black, backgroundColor=red, contentsFontSize=120, cornerFontSize=20}
+\setKVdefault[RectoKeys]{borders=true, trame=true, corners=true, backgroundImg=true, textColor=black, backgroundColor=red, contentsFontSize=120, circleRay=20}
 \setKVdefault[VersoKeys]{backgroundImg=true, trame=true}
 
 
@@ -96,6 +96,8 @@
 \newcommand{\cardcontent}[3][]{
     \pgfmathsetmacro{\textsize}{120}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
+    \showKV[RectoKeys]{backgroundImg}
+    \showKV[RectoKeys]{backgroundColor}
     \begin{scope}
 		\ifboolKV[RectoKeys]{borders} {
 			\clip[cardcorners] \shapeMargin;
@@ -103,7 +105,7 @@
 			\clip[cardcorners] \shapeCard;
 		}
 		\ifboolKV[RectoKeys]{backgroundImg} {
-			\shade[xshift=29.5mm, yshift=44.5mm, inner color={\useKV[RectoKeys]{backgroundColor}}, outer color=white] circle (\cardwidth) circle(#3);
+			\shade[xshift=29.5mm, yshift=44.5mm, inner color={\useKV[RectoKeys]{backgroundColor}}, outer color=white] circle (\cardwidth) circle({\useKV[RectoKeys]{circleRay}});
 		}
 		{}
 		\draw[color=white] (0,0) -- (60,70);
@@ -120,7 +122,7 @@
 		\draw[color=white] (35,90) -- (0,80);
 		\draw[color=white] (40,90) -- (60,-20);
 		\draw[color=white] (0,5) -- (60,90);
-		\draw[xshift=29.5mm, yshift=44.5mm, fill=white, color=white] circle(#3);
+		\draw[xshift=29.5mm, yshift=44.5mm, fill=white, color=white] circle(({\useKV[RectoKeys]{circleRay}});
 	\end{scope}
 	\node[align=center, text width=5 cm] at (0.5*\cardwidth,0.5*\cardheight) {{\color{\useKV[RectoKeys]{textColor}}\fontsize{\textsize}{\textlineskip}\selectfont #2}};
 }
