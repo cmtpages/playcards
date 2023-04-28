@@ -93,8 +93,8 @@
 %              #3: background color
 %              #4: fontsize (pt)
 %              #5: circle ray (mm)
-\newcommand{\cardcontent}[3][]{
-    \pgfmathsetmacro{\textsize}{120}
+\newcommand{\cardcontent}[2][]{
+    \pgfmathsetmacro{\textsize}{\useKV[RectoKeys]{contentsFontSize}}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
     \showKV[RectoKeys]{backgroundImg}
     \showKV[RectoKeys]{backgroundColor}
@@ -139,11 +139,11 @@
 % Parameters : #1: parametres facultatifs KV
 %			   #2: text contents
 %              #3: circle ray at card center (mm)
-\newcommand{\drawcardrecto}[3][]{
+\newcommand{\drawcardrecto}[2][]{
 	\begin{tikzpicture}
 		\cardborder
 		\cardpadding
-		\cardcontent{#2}{#3}
+		\cardcontent{#2}
 		\ifboolKV[RectoKeys]{corners}{
 			\cardcorner{#2}
 		}{
@@ -181,16 +181,16 @@
 % Parameters : #1: parametres facultatives KV
 %			   #2: text contents
 %              #3: circle ray at card center (mm)
-\newcommand{\drawcardsrecto}[3][] {
+\newcommand{\drawcardsrecto}[2][] {
 	\useKVdefault[RectoKeys]%
 	\setKV[RectoKeys]{#1}%
 	\ifboolKV[RectoKeys]{trame}{
 		\foreach \k in {0,...,2}{%
 			\foreach \n in {0,...,2}{%
-				\noindent\drawcardrecto{#2}{#3}%
+				\noindent\drawcardrecto{#2}%
 			}\\%
 		}%
 	}{
-		\noindent\drawcardrecto{#2}{#3}%
+		\noindent\drawcardrecto{#2}%
 	}%
 }
