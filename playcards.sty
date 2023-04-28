@@ -65,8 +65,7 @@
 }
 
 
-\setKVdefault[RectoKeys]{borders=true, trame=true}
-
+\setKVdefault[RectoKeys]{borders=true, trame=true, corners=true}
 \setKVdefault[VersoKeys]{backgroundImg=true, trame=true}
 
 
@@ -89,10 +88,11 @@
     \end{scope}
 }
 
-% Parameters : #1: text contents
-%              #2: background color
-%              #3: fontsize (pt)    
-%              #4: circle ray (mm)
+% Parameters : #1: parametres facultatifs KV
+%			   #2: text contents
+%              #3: background color
+%              #4: fontsize (pt)
+%              #5: circle ray (mm)
 \newcommand{\cardcontent}[5][]{
     \pgfmathsetmacro{\textsize}{#4}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
@@ -141,7 +141,10 @@
 		\cardborder
 		\cardpadding
 		\cardcontent{#2}{#3}{#4}{#5}
-		\cardcorner{#2}
+		\ifboolKV[RectoKeys]{corners}{
+			\cardcorner{#2}
+		}{
+		}
 	\end{tikzpicture}%
 }
 
