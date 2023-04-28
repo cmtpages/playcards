@@ -65,7 +65,7 @@
 }
 
 
-\setKVdefault[RectoKeys]{borders=true, trame=true, corners=true}
+\setKVdefault[RectoKeys]{borders=true, trame=true, corners=true, backgroundImg=true}
 \setKVdefault[VersoKeys]{backgroundImg=true, trame=true}
 
 
@@ -102,7 +102,10 @@
 		}{
 			\clip[cardcorners] \shapeCard;
 		}
-		\shade[xshift=29.5mm, yshift=44.5mm, inner color=#3, outer color=white] circle (\cardwidth) circle(#4);
+		\ifboolKV[RectoKeys]{backgroundImg} {
+			\shade[xshift=29.5mm, yshift=44.5mm, inner color=#3, outer color=white] circle (\cardwidth) circle(#4);
+		}
+		{}
 		\draw[color=white] (0,0) -- (60,70);
 		\draw[color=white] (0,20) -- (60,15);
 		\draw[color=white] (0,24) -- (60,30);
