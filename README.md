@@ -1,7 +1,9 @@
 # Playcards package
 Tiny LaTeX package to draw playcards.
+## Version
+0.1, 2023/04/29
 ## Licence
-GNU GPL v3.0
+GNU LGPL v3.0 https://www.gnu.org/licenses/lgpl-3.0.html
 
 
 Author    : Clément PAGÈS
