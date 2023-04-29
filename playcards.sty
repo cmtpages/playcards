@@ -20,14 +20,22 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{playcards}[2023/04/27, Personal commands]
 
+
+\RequirePackage[scale=0.950]{geometry}
+
+\RequirePackage{simplekv}
 \RequirePackage{anttor}
-
 \RequirePackage{graphicx}
-
 \RequirePackage{tikz}
 \usetikzlibrary{patterns}
 \usetikzlibrary{shadows}
-\usepgflibrary {shadings} 
+\usepgflibrary {shadings}
+\tikzset{
+    x=1mm,y=1mm,
+    cardcorners/.style={
+        rounded corners=4
+    },
+}
 
 \RequirePackage[outline]{contour}
 
@@ -44,12 +52,7 @@
 \def\shapeCardBody{(0,0) rectangle (\cardwidthbody,\cardheightbody)}
 \def\shapeMargin{(\cardmargin,\cardmargin) rectangle (\cardwidthbody,\cardheightbody)}
 
-\tikzset{
-    x=1mm,y=1mm,
-    cardcorners/.style={
-        rounded corners=4
-    },
-}
+
 
 \newcommand{\carddebug}{
     \draw [step=1,help lines] (0,0) grid (\cardwidth,\cardheight);
@@ -66,12 +69,12 @@
 
 
 \setKVdefault[RectoKeys]{borders=true, trame=true, corners=true, backgroundImg=true, textColor=black, backgroundColor=red, contentsFontSize=120, circleRay=20}
-\setKVdefault[VersoKeys]{backgroundImg=true, trame=true}
+\setKVdefault[VersoKeys]{backgroundImg=true, trame=true, contentsFontSize=50}
 
 
 
-\newcommand{\cardbackgroundverso}[3][]{
-    \pgfmathsetmacro{\textsize}{#3}
+\newcommand{\cardbackgroundverso}[2][]{
+    \pgfmathsetmacro{\textsize}{\useKV[VersoKeys]{contentsFontSize}}
     \pgfmathsetmacro{\textlineskip}{1.2*\textsize}
 	\clip[cardcorners] \shapeCard;
     \ifboolKV[VersoKeys]{backgroundImg} {%
@@ -144,25 +147,25 @@
 }
 
 
-\newcommand{\drawcardverso}[3][]{
+\newcommand{\drawcardverso}[2][]{
 	\begin{tikzpicture}%
 		\cardpadding
-		\cardbackgroundverso{#2}{#3}
+		\cardbackgroundverso{#2}
 	\end{tikzpicture}
 }
 
 
-\newcommand{\drawcardsverso}[3][]{
+\newcommand{\drawcardsverso}[2][]{
     \useKVdefault[VersoKeys]%
     \setKV[VersoKeys]{#1}%
     \ifboolKV[VersoKeys]{trame}{%
 		\foreach \k in {0,...,2}{%
 			\foreach \n in {0,...,2}{%
-				\noindent\drawcardverso{#2}{#3}%
+				\noindent\drawcardverso{#2}%
 			}\\%
 		}%
 	}{%
-		\noindent\drawcardverso{#2}{#3}%
+		\noindent\drawcardverso{#2}%
 	}%
 }
 
