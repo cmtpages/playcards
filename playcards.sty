@@ -14,7 +14,6 @@
 \ProvidesPackage{playcards}[2023/04/29, Personal commands]
 
 \RequirePackage{simplekv}
-\RequirePackage{anttor}
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
 \usetikzlibrary{patterns}
@@ -26,6 +25,15 @@
         rounded corners=4
     },
 }
+
+\newif\if@loadanttorfont\@loadanttorfontfalse
+\DeclareOption{anttor}{\@loadanttorfonttrue}
+\ProcessOptions\relax
+
+\if@loadanttorfont
+  \RequirePackage{anttor}
+\fi
+
 
 \RequirePackage[outline]{contour}
 
