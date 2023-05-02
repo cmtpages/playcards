@@ -39,23 +39,29 @@ Merci également à \href{https://tex.stackexchange.com/users/1948/didest}{dides
 \section{Téléchargement, installation, prérequis}
 Le package est disponible sur CTAN : \href{https://ctan.org/pkg/playcards}{https://ctan.org/pkg/playcards}. Il contient un unique fichier : \texttt{playcards.sty}.
 
+	\subsection{Packages chargés automatiquement}
 Certains packages sont chargés automatiquement. Ils sont installés par défaut sur la majorités des installations classiques :
 \begin{description}
 	\item[\package{tikz}] et certaines de ses librairies.
 	\item[\package{simplekv}] pour gérer les paramètres facultatifs des commandes par système \kv{clé}{valeur}.
 	\item[\package{graphicx}] pour les images. 
 	\item[\package{contour}] pour les ombres et contours de textes.
-	\item[\package{geometry}] configuré pour optimiser l'occupation d'une feuille A4 en la remplissant de cartes convenablement alignées.
 \end{description}
+
+	\subsection{Packages recommandés non chargés automatiquement}
+Pour dessiner les cartes individuellement, il n'y a pas de contraintes sur les marges ou le format de papier.
+
+Pour obtenir des planches de cartes identiques, le format doit être A4 et le package \commande{usepackage[scale=0.95]\{geometry\}} doit être chargé en préambule.
 
 \section{Principe général}
 Les principales commandes sont construites sur un système de clés/valeurs, sur le modèle \texttt{\textbackslash commande[\kv{cle1}{valeur1}, \kv{cle2}{valeur2}, …]\{param1\}\{param2\}}.
 
-Toutes les clés sont facultatives et si elles ne sont pas renseignées, il leur est attribué une valeur par défaut.
-
-Sauf précision contraire, les longueurs sont mentionnées en millimètres.
+Toutes les clés sont facultatives et si elles ne sont pas renseignées, il leur est attribué une valeur par défaut. Sauf précision contraire, les longueurs sont mentionnées en millimètres.
 
 \section{Commandes fournies}
+	\subsection{Options du package}
+Par défaut, la police d'écriture utilisée pour le texte des cartes est la même que celle du document. Il est possible de passer en option le paramètre \texttt{anttor} pour que la police des cartes soit \href{https://tug.org/FontCatalogue/antykwatorunska/}{Antykwa Toruńska}.
+
 	\subsection{Commande \commande{drawcardsrecto}}
 Cette commande prend un paramètre obligatoire : le texte qui apparaîtra au centre de la carte. Elle remplit une feuille A4 avec 9 cartes identiques. Cette commande trace le recto des cartes. Un exemple est donné figure \ref{fig:recto}.
 \begin{figure}[h]\begin{center}
@@ -66,12 +72,12 @@ Cette commande prend un paramètre obligatoire : le texte qui apparaîtra au cen
 Paramètres optionnels :
 \begin{itemize}
 	\item \key{borders}{true}{Trace les bordures. Si \texttt{false}, les bordures sont retirées.}
-	\item \key{trame}{true}{Si \texttt{true}, remplit une feuille A4 avec les cartes. Si \texttt{false}, dessine une seule carte.}
+	\item \key{trame}{true}{Si \texttt{true}, remplit une feuille A4 avec les cartes. Si \texttt{false}, dessine une seule carte. Pour fonctionner correctement, la clé \texttt{trame=true} nécessite d'être format A4 et d'avoir chargé en préambule \commande{usepackage[scale=0.95]\{geometry\}}}.
 	\item \key{corners}{true}{Si \texttt{true}, le texte de la carte est reporté à l'endroit à et à l'envers dans les coins. Si \texttt{false}, les coins ne sont pas affichés.}
 	\item \key{backgroundImg}{true}{Si \texttt{true}, affiche l'arrière-plan. Si \texttt{false}, pas d'arrière-plan.}
 	\item \key{backgroundColor}{red}{Spécifie la couleur de l'arrière-plan. Sera ignoré si \texttt{backgroundImg=false}. Utilise les couleurs du package \href{https://www.ctan.org/pkg/xcolor}{xcolor}.}
 	\item \key{contentsFontSize}{120}{Taille (en pt) du texte au centre de la carte.}
-	\item \key{cicleRay}{20}{Rayon du cercle blanc au centre de la carte. La valeur \texttt 0 équivaut à ne pas tracer le cercle.}
+	\item \key{circleRay}{20}{Rayon du cercle blanc au centre de la carte. La valeur \texttt 0 équivaut à ne pas tracer le cercle.}
 \end{itemize}
 
 	\subsection{Commande \commande{drawcardsverso}}
@@ -86,7 +92,7 @@ Pour avoir le bon alignement, il est recommandé de placer les commandes dans un
 Paramètres optionnels :
 \begin{itemize}
 	\item \key{backgroundImg}{true}{Si \texttt{true}, affiche l'arrière-plan. Si \texttt{false}, pas d'arrière-plan.}
-	\item \key{trame}{true}{Si \texttt{true}, remplit une feuille A4 avec les cartes. Si \texttt{false}, dessine une seule carte.}
+	\\item \key{trame}{true}{Si \texttt{true}, remplit une feuille A4 avec les cartes. Si \texttt{false}, dessine une seule carte. Pour fonctionner correctement, la clé \texttt{trame=true} nécessite d'être format A4 et d'avoir chargé en préambule \commande{usepackage[scale=0.95]\{geometry\}}}.
 	\item \key{contentsFontSize}{50}{Taille (en pt) du texte au centre de la carte.}
 \end{itemize}
 
