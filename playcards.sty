@@ -26,13 +26,10 @@
     },
 }
 
+% Check if attor is given a optional parameter
 \newif\if@loadanttorfont\@loadanttorfontfalse
 \DeclareOption{anttor}{\@loadanttorfonttrue}
 \ProcessOptions\relax
-
-\if@loadanttorfont
-  \RequirePackage{anttor}
-\fi
 
 
 \RequirePackage[outline]{contour}
@@ -168,6 +165,9 @@
 }
 
 \newcommand{\drawcardsrecto}[2][] {
+	\if@loadanttorfont % Change card font to anttor if parameter antor given
+		\fontfamily{antt}
+	\fi
 	\useKVdefault[RectoKeys]%
 	\setKV[RectoKeys]{#1}%
 	\ifboolKV[RectoKeys]{trame}{
