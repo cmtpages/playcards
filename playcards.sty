@@ -151,6 +151,9 @@
 
 
 \newcommand{\drawcardsverso}[2][]{
+	\if@loadanttorfont % Change card font to anttor if parameter antor given
+		\fontfamily{antt}
+	\fi
     \useKVdefault[VersoKeys]%
     \setKV[VersoKeys]{#1}%
     \ifboolKV[VersoKeys]{trame}{%
