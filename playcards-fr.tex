@@ -40,7 +40,7 @@ Merci également à \href{https://tex.stackexchange.com/users/1948/didest}{dides
 Le package est disponible sur CTAN : \href{https://ctan.org/pkg/playcards}{https://ctan.org/pkg/playcards}. Il contient un unique fichier : \texttt{playcards.sty}.
 
 	\subsection{Packages chargés automatiquement}
-Certains packages sont chargés automatiquement. Ils sont installés par défaut sur la majorités des installations classiques :
+Certains packages sont chargés automatiquement. Ils sont installés par défaut sur la majorités des configurations classiques :
 \begin{description}
 	\item[\package{tikz}] et certaines de ses librairies.
 	\item[\package{simplekv}] pour gérer les paramètres facultatifs des commandes par système \kv{clé}{valeur}.
@@ -56,7 +56,9 @@ Pour obtenir des planches de cartes identiques, le format doit être A4 et le pa
 \section{Principe général}
 Les principales commandes sont construites sur un système de clés/valeurs, sur le modèle \texttt{\textbackslash commande[\kv{cle1}{valeur1}, \kv{cle2}{valeur2}, …]\{param1\}\{param2\}}.
 
-Toutes les clés sont facultatives et si elles ne sont pas renseignées, il leur est attribué une valeur par défaut. Sauf précision contraire, les longueurs sont mentionnées en millimètres.
+Toutes les clés sont facultatives et si elles ne sont pas renseignées, il leur est attribué une valeur par défaut.
+
+Sauf précision contraire, les longueurs sont mentionnées en millimètres.
 
 \section{Commandes fournies}
 	\subsection{Options du package}
@@ -72,7 +74,7 @@ Cette commande prend un paramètre obligatoire : le texte qui apparaîtra au cen
 Paramètres optionnels :
 \begin{itemize}
 	\item \key{borders}{true}{Trace les bordures. Si \texttt{false}, les bordures sont retirées.}
-	\item \key{trame}{true}{Si \texttt{true}, remplit une feuille A4 avec les cartes. Si \texttt{false}, dessine une seule carte. Pour fonctionner correctement, la clé \texttt{trame=true} nécessite d'être format A4 et d'avoir chargé en préambule \commande{usepackage[scale=0.95]\{geometry\}}}.
+	\item \key{trame}{true}{Si \texttt{true}, remplit une feuille A4 avec les cartes. Si \texttt{false}, dessine une seule carte. Pour fonctionner correctement, la clé \texttt{trame=true} nécessite que le document soit au format A4 et que soit chargé en préambule \commande{usepackage[scale=0.95]\{geometry\}}}.
 	\item \key{corners}{true}{Si \texttt{true}, le texte de la carte est reporté à l'endroit à et à l'envers dans les coins. Si \texttt{false}, les coins ne sont pas affichés.}
 	\item \key{backgroundImg}{true}{Si \texttt{true}, affiche l'arrière-plan. Si \texttt{false}, pas d'arrière-plan.}
 	\item \key{backgroundColor}{red}{Spécifie la couleur de l'arrière-plan. Sera ignoré si \texttt{backgroundImg=false}. Utilise les couleurs du package \href{https://www.ctan.org/pkg/xcolor}{xcolor}.}
@@ -92,7 +94,7 @@ Pour avoir le bon alignement, il est recommandé de placer les commandes dans un
 Paramètres optionnels :
 \begin{itemize}
 	\item \key{backgroundImg}{true}{Si \texttt{true}, affiche l'arrière-plan. Si \texttt{false}, pas d'arrière-plan.}
-	\\item \key{trame}{true}{Si \texttt{true}, remplit une feuille A4 avec les cartes. Si \texttt{false}, dessine une seule carte. Pour fonctionner correctement, la clé \texttt{trame=true} nécessite d'être format A4 et d'avoir chargé en préambule \commande{usepackage[scale=0.95]\{geometry\}}}.
+	\item \key{trame}{true}{Si \texttt{true}, remplit une feuille A4 avec les cartes. Si \texttt{false}, dessine une seule carte. Pour fonctionner correctement, la clé \texttt{trame=true} nécessite que le document soit au format A4 et que soit chargé en préambule \commande{usepackage[scale=0.95]\{geometry\}}}.
 	\item \key{contentsFontSize}{50}{Taille (en pt) du texte au centre de la carte.}
 \end{itemize}
 
