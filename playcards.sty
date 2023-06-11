@@ -11,7 +11,7 @@
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{playcards}[2023/05/02, Personal commands]
+\ProvidesPackage{playcards}[2023/05/02, Provides commands to draw playcards]
 
 \RequirePackage{simplekv}
 \RequirePackage{graphicx}
@@ -19,12 +19,6 @@
 \usetikzlibrary{patterns}
 \usetikzlibrary{shadows}
 \usepgflibrary {shadings}
-\tikzset{
-    x=1mm,y=1mm,
-    cardcorners/.style={
-        rounded corners=4
-    },
-}
 
 % Check if attor is given a optional parameter
 \newif\if@loadanttorfont\@loadanttorfontfalse
@@ -151,6 +145,12 @@
 
 
 \newcommand{\drawcardsverso}[2][]{
+	\tikzset{%
+		x=1mm,y=1mm,%
+		cardcorners/.style={%
+			rounded corners=4%
+		},%
+	}
 	\if@loadanttorfont % Change card font to anttor if parameter antor given
 		\fontfamily{antt}
 	\fi
@@ -168,6 +168,12 @@
 }
 
 \newcommand{\drawcardsrecto}[2][] {
+	\tikzset{%
+		x=1mm,y=1mm,%
+		cardcorners/.style={%
+			rounded corners=4%
+		},%
+	}
 	\if@loadanttorfont % Change card font to anttor if parameter antor given
 		\fontfamily{antt}
 	\fi
